@@ -4,7 +4,6 @@
   import { useStationStore } from '@/stores/stations'
 
   const stations = useStationStore()
-
 </script>
 
 <template>

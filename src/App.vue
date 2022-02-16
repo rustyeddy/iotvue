@@ -1,6 +1,40 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+  import { RouterLink, RouterView } from 'vue-router'
+  import HelloWorld from '@/components/HelloWorld.vue'
+  import { defineComponent } from 'vue'
+  import { useStationStore } from '@/stores/stations'
+
+  const store = useStationStore()
+
+  console.log("Starting connection to WebSocket Server")
+  const connection = new WebSocket("ws://10.11.1.11:8011/ws")
+  connection.onmessage = function(event) {
+    const obj = JSON.parse(event.data)
+    if (! obj.station) {
+      return
+    }
+    const store = useStationStore()
+
+    const stid = obj.station
+    const sens = obj.sensor
+    const val  = obj.value
+    const time = obj.time
+
+    store.$patch({stations: {
+      station: stid,
+      data: {
+        sensor: sens,
+        value: val,
+        timestamp: time,
+      }
+    }})
+    console.log(stid, sens, val, time)
+  }
+
+  connection.onopen = function(event) {
+    console.log(event)
+    console.log("Successfully connected to the echo websocket server...")
+  }
 </script>
 
 <template>

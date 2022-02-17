@@ -7,7 +7,10 @@ export const useStationStore = defineStore({
     }), 
     
     getters: {
-        getStations: (state) => state.stations
+        getStations: (state) => state.stations,
+        getStation: (state) => {
+            return (stid) => state.users.find((station) => station.station === stid)
+        },
     },
 
     actions: {

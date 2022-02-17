@@ -13,22 +13,39 @@
     if (! obj.station) {
       return
     }
+    console.log(obj)
     const store = useStationStore()
-
-    const stid = obj.station
-    const sens = obj.sensor
-    const val  = obj.value
-    const time = obj.time
-
-    store.$patch({stations: {
-      station: stid,
-      data: {
-        sensor: sens,
-        value: val,
-        timestamp: time,
+    store.$patch((state) => {
+      const ts = { 
+        timestamp: obj.time, 
+        value: obj.value
       }
-    }})
-    console.log(stid, sens, val, time)
+      const stid = obj.station
+      const sensid = obj.sensor
+
+      let st = state.stations[stid]
+      if (!st) {
+        st = {
+          station: stid,
+          sensors: {}
+        }
+        st.sensors[sensid] = [ ts ]
+        state.stations[stid] = st
+        return
+      }
+
+      if (!st.sensors) {
+        st.sensors = {}
+      }
+
+      // We have a station, look for the sensor
+      let sensor = st.sensors[sensid]
+      if (!sensor) {
+        sensor = []
+        st.sensors[sensid] = sensor
+      }
+      sensor.push(ts)
+    })
   }
 
   connection.onopen = function(event) {
@@ -48,7 +65,6 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav navbar-expand-lg navbar-light bg-light">
             <RouterLink class='nav-link' to="/">Home</RouterLink>
-            <RouterLink class='nav-link' to="/about">About</RouterLink>
             <RouterLink class='nav-link' to="/stations">Stations</RouterLink>
           </div>
         </div>

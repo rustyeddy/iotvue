@@ -9,10 +9,19 @@
 <template>
   <div class="stations container">
     <div class="row m-4 p-4">
-	<h1>Stations View</h1>
-    </div>
-    <div class="row m-4 p-4">
-      <Station v-for="station in stations.getStations" :station="station" />
+      <div class="col-3">
+        <h1>Stations</h1>
+        <ul class="list-group">
+          <li class="list-group-item-fluid" v-for="station in stations.getStations" :key="station">
+            {{ station.station }}
+          </li>
+        </ul> 
+      </div>
+      <div class="col">
+        <div class="row">
+          <Station v-for="station in stations.getStations" :station="station" />
+        </div>
+      </div>
     </div>
   </div>
 </template>

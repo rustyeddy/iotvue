@@ -6,12 +6,18 @@
 
 <template>
   <div class="col-4">
-    <h3>{{ station.station }}</h3>
-    <ul class="list-group">
-      <li class="list-group-item" v-for="(tss, sens) in station.sensors">
-        <span class="bold">{{sens}}</span>: <span class="italic">{{ tss[tss.length - 1].value }}</span>
-        <p>historic values: {{ tss.length }}</p>
-      </li>
-    </ul>
+    <div class="card">
+      <h3 class="card-header">{{ station.station }}</h3>  
+      <div class="card-text">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-start" v-for="(tss, sens) in station.sensors">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">{{ sens }} : {{ tss[tss.length - 1].value }} </div>
+              </div>
+            <span class="badge bg-primary rounded-pill">{{ tss.length }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>

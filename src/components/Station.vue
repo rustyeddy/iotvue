@@ -6,7 +6,7 @@
 
 <template>
   <div class="col-4">
-    <div class="card">
+    <div class="card mb-4">
       <h3 class="card-header">{{ station.station }}</h3>  
       <div class="card-text">
         <ul class="list-group list-group-flush">
